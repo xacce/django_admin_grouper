@@ -19,7 +19,25 @@ TEMPLATE_DIRS = (
   #...
     )
 ```
+3. Modify admin classes
+```
+class RecordAdmin(admin.ModelAdmin):
+    def regroup_by(self):
+        return 'category'
 
+    def queryset(self, request):
+        qs = super(self.__class__, self).queryset(request).select_related(self.regroup_by())
+        return qs
+```
+
+> ```regroup_by``` function return foreign key for regroup
+
+> ```queryset``` - reduce the number of queries with [select_related](https://docs.djangoproject.com/en/dev/ref/models/querysets/#select-related)
+
+
+* * *
+* * *
+* * *
 ## If you use custom admin templates (```change_list_results.html```)
 Modify and use this code:
 ```
